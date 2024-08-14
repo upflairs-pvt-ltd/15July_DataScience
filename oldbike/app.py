@@ -24,23 +24,24 @@ def predict():
                         'Mahindra': 12,'Benelli': 13,'Triumph': 14,'Ducati': 15,'BMW': 16}
                 
         brand_dict2 = {value:key  for key, value in brand_dict.items()}
-        print(brand_dict2)
         
         UNSEEN_DATA = [[kms_driven,owner,age,power,brand_name]]   # user input data 
         PREDICTION = model.predict(UNSEEN_DATA)[0][0]   # array([25421.25421])
 
         ## inserting data into database  
 
-        # query_to_insert = """
-        # """
-        # conn  =sqlite3.connect('bikedata.db')
-        # cur = conn.cursor() 
-        # cur.execute(query_to_insert, data)
-  
-        # cur.close() 
-        # conn.close()
+        query_to_insert = """
+        Insert into BikeDetails values(?,?,?,?,?,?)
+        """
+        conn  =  sqlite3.connect('bikedata.db')
+        cur = conn.cursor() 
+        data  = (owner,brand_dict2[brand_name],kms_driven,power,age,int(round(PREDICTION,2)))
+        cur.execute(query_to_insert, data)
+        conn.commit() 
+        print("Your record has been stored in database")
+        cur.close() 
+        conn.close()
 
-        
         return render_template('home.html' , prediction_text= str(round(PREDICTION,2))) 
 
 

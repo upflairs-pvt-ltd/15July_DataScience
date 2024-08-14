@@ -1,7 +1,9 @@
 numpy
 pandas
 scikit-learn
+joblib
 flask 
 matplotlib 
 seaborn
-mysqlx-connector-python
+mysql-connector-python
+sqlite3
